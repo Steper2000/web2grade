@@ -19,3 +19,10 @@
 '''
 
 ip = '192.168.3.1'
+oc=ip.split('.')
+
+print(oc)
+print(f'''
+
+     {int(oc[0]):<10} {int(oc[1]):<10} {int(oc[2]):<10} {int(oc[3]):<10}
+     {int(oc[0]):010b} {int(oc[1]):010b} {int(oc[2]):010b} {int(oc[3]):010b}''')

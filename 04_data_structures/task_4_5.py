@@ -13,3 +13,13 @@
 
 command1 = 'switchport trunk allowed vlan 1,2,3,5,8'
 command2 = 'switchport trunk allowed vlan 1,3,8,9'
+co1=command1[command1.find('1'):]
+print(co1)
+co2=command2[command2.find('1'):]
+print(co2)
+s1=set(co1.split(','))
+s2=set(co2.split(','))
+print(s1)
+print(s2)
+d=sorted(s1 & s2)
+print(d)
