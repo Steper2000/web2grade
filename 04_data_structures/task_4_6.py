@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 '''
 Задание 4.6
-
+aaaaaaaaaaaaaaaaaaaaa
 Обработать строку ospf_route и вывести информацию на стандартный поток вывода в виде:
 Protocol:              OSPF
 Prefix:                10.0.24.0/24
