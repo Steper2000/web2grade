@@ -41,7 +41,7 @@ def convert_config_to_dict(config_filename):
     with open(config_filename, 'r') as f:
         com={}
         fstr=f.read().rstrip().split('\n')
-        for i in range(22, len(fstr)):
+        for i in range(1, len(fstr)):
             if fstr[i][0]!='!' and fstr[i][0]!=' ' and fstr[i]!='end' and not ignore_command(fstr[i], ignore):
                 com[fstr[i]]=[]
                 j=1

@@ -29,7 +29,7 @@ R6           Fa 0/2          143           R S I           2811       Fa 0/0
 '''
 def parse_cdp_neighbors(command_output):
     dic={}
-    dev=command_output[1:command_output.find('>')]
+    dev=command_output[:command_output.find('>')]
     table=command_output[command_output.find("Port ID")+8:].rstrip().split('\n')
     for row in table:
         lir=row.split()

@@ -40,5 +40,35 @@ Cгенерировать топологию, которая соответст�
 > pip install graphviz
 
 '''
+from draw_network_graph import draw_topology
 
-import draw_network_graph
+import os
+os.environ["PATH"] += os.pathsep + 'C:/Program Files (x86)/Graphviz2.38/bin'
+
+def create_network_map(filenames):
+    dic={}
+    dev_used=[]
+    for fi in filenames:
+        with open (fi, 'r') as conf:
+            comm=conf.read()
+            dev=comm[:comm.find('>')]
+            dev_used.append(dev)
+            table=comm[comm.find("Port ID")+8:].rstrip().split('\n')
+            for row in table:
+                lir=row.split()
+                if not lir[0] in dev_used:
+                    dic[(dev, lir[1]+lir[2])]=(lir[0], lir[-2]+lir[-1])
+
+    
+    return dic    # {('R4', 'Fa0/1'): ('R5', 'Fa0/1'),('R4', 'Fa0/2'): ('R6', 'Fa0/0')}
+
+
+
+files=['sh_cdp_n_sw1.txt', 'sh_cdp_n_r1.txt', 'sh_cdp_n_r2.txt', 'sh_cdp_n_r3.txt']
+
+t=create_network_map(files)
+
+#t={('R4', 'Fa0/1'): ('R5', 'Fa0/1'),('R4', 'Fa0/2'): ('R6', 'Fa0/0')}
+
+draw_topology(t)
+#print(t)
