@@ -2,6 +2,6 @@
 чем на 5000 рублей."
 
 SELECT plogin, sum(price) as sprice FROM `services` 
-WHERE ptime BETWEEN '2013-01-01' and '2014-01-01' 
+WHERE ptime BETWEEN '2013-01-01' and '2013-12-31' 
 GROUP BY plogin 
 HAVING SUM(price) > 5000
