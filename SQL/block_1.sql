@@ -19,8 +19,6 @@
 b. У одного пользователя может быть только одна анкета.'
 
 
-
-
 CREATE TABLE users(
     username VARCHAR(20),
     pswd VARCHAR(20),
@@ -37,14 +35,6 @@ CREATE TABLE users(
     PRIMARY KEY (username)
 );
 
-INSERT INTO `users`(`username`, `pswd`, `first_name`, `sex`, `birthday`, `country`, `city`, `email`, `lasttime`, `rating`, "pr_id") 
-VALUES ('Steper','1111','Иерусалим','m','2000-06-21',"Русь","Киев","w@bk.ru",'2019-12-30 12:11:34',10, 1),
-('iera','112','Иера','f','2001-02-01',"Русь","Киев","r@bk.ru",'2019-12-30 12:12:50',13, 2),
-('lox','123','Вангог','m','1988-04-13',"Колумбия","Дыра","y@bk.ru",'2018-10-16 00:23:23',60, 3),
-('emae','1132','Тихон','m','2004-06-01',"Русь","Магадан","v@bk.ru",'2019-10-10 03:20:06',16, 4),
-('lox2','123','Вангогиня','f','1988-04-13',"Колумбия","Дыра","p@bk.ru",'2018-10-16 00:23:40',40, 5);
-
-
 CREATE TABLE profiles (
     id INT,
     about TEXT,
@@ -54,13 +44,6 @@ CREATE TABLE profiles (
     targ ENUM('общение','серьёзные отношения', "ничего серьёзного"),
     PRIMARY KEY (id)
 );
-
-INSERT INTO `profiles`(`id`, `about`, `hobbies`, `bad`, `live`, `targ`) 
-VALUES (1,"Im the best",'Love girls)))','-','один',"серьёзные отношения"),
-(5,"Im the man with prekol",'Love boys','-','в общежитии',"серьёзные отношения"),
-(2,"I hate men ",'Love girls)))','-','один',"ничего серьёзного"),
-(3,"Im the black",'Love KFS','-','с родителями',"общение"),
-(4,"Im the silver",'Love MAC','-','один',"общение");
 
 ALTER TABLE `users` ADD FOREIGN KEY (`pr_id`) 
 REFERENCES `profiles`(`id`) 
@@ -77,6 +60,46 @@ CREATE TABLE services (
     PRIMARY KEY (`id`)
 );
 
+ALTER TABLE `services` ADD FOREIGN KEY (`plogin`) 
+REFERENCES `users`(`username`) 
+ON DELETE RESTRICT 
+ON UPDATE RESTRICT;
+
+CREATE TABLE messages (
+    id INT,
+    slogin VARCHAR(20),
+    rlogin VARCHAR(20),
+    mtext TEXT,
+    mtime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    stat ENUM('прочитано', "не прочитано"),
+    PRIMARY KEY (`id`)
+);
+
+ALTER TABLE `messages` ADD FOREIGN KEY (`rlogin`) 
+REFERENCES `users`(`username`) 
+ON DELETE RESTRICT 
+ON UPDATE RESTRICT;
+
+ALTER TABLE `messages` ADD FOREIGN KEY (`slogin`) 
+REFERENCES `users`(`username`) 
+ON DELETE RESTRICT 
+ON UPDATE RESTRICT;
+
+
+INSERT INTO `users`(`username`, `pswd`, `first_name`, `sex`, `birthday`, `country`, `city`, `email`, `lasttime`, `rating`, "pr_id") 
+VALUES ('Steper','1111','Иерусалим','m','2000-06-21',"Русь","Киев","w@bk.ru",'2019-12-30 12:11:34',10, 1),
+('iera','112','Иера','f','2001-02-01',"Русь","Киев","r@bk.ru",'2019-12-30 12:12:50',13, 2),
+('lox','123','Вангог','m','1988-04-13',"Колумбия","Дыра","y@bk.ru",'2018-10-16 00:23:23',60, 3),
+('emae','1132','Тихон','m','2004-06-01',"Русь","Магадан","v@bk.ru",'2019-10-10 03:20:06',16, 4),
+('lox2','123','Вангогиня','f','1988-04-13',"Колумбия","Дыра","p@bk.ru",'2018-10-16 00:23:40',40, 5);
+
+INSERT INTO `profiles`(`id`, `about`, `hobbies`, `bad`, `live`, `targ`) 
+VALUES (1,"Im the best",'Love girls)))','-','один',"серьёзные отношения"),
+(5,"Im the man with prekol",'Love boys','-','в общежитии',"серьёзные отношения"),
+(2,"I hate men ",'Love girls)))','-','один',"ничего серьёзного"),
+(3,"Im the black",'Love KFS','-','с родителями',"общение"),
+(4,"Im the silver",'Love MAC','-','один',"общение");
+
 INSERT INTO `services`(`plogin`, `pservice`, `price`, `ptime`, `term`) 
 VALUES (1, "iera","всё", 10000,"2018-09-11 15:00:03", 12),
 (2, "lox","неограниченные лайки", 2000,"2011-05-21 16:40:43", 48),
@@ -92,22 +115,6 @@ VALUES (1, "iera","всё", 10000,"2018-09-11 15:00:03", 12),
 (12, 'Steper', "неограниченные лайки", 3000,"2013-12-31 14:40:43", 5),
 (13, 'Steper', "неограниченные лайки", 3000,"2014-01-01 14:40:43", 5);
 
-ALTER TABLE `services` ADD FOREIGN KEY (`plogin`) 
-REFERENCES `lusers`(`username`) 
-ON DELETE RESTRICT 
-ON UPDATE RESTRICT;
-
-
-CREATE TABLE messages (
-    id INT,
-    slogin VARCHAR(20),
-    rlogin VARCHAR(20),
-    mtext TEXT,
-    mtime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    stat ENUM('прочитано', "не прочитано"),
-    PRIMARY KEY (`id`)
-);
-
 INSERT INTO `messages`(`slogin`, `rlogin`, `mtext`, `mtime` `stat`) 
 VALUES (1,'Steper','iera',"привет","2019-12-30 12:09:30",'прочитано'),
 (2, 'iera','Steper',"привет)", "2019-12-30 12:10:30", 'прочитано'),
@@ -118,14 +125,3 @@ VALUES (1,'Steper','iera',"привет","2019-12-30 12:09:30",'прочитан
 (7, 'lox','lox2',"да ладно тебе","2018-10-16 00:20:40", 'прочитано'),
 (8, 'lox2','lox',"у меня диабет","2018-10-16 00:23:33", 'не прочитано'),
 (9, 'iera','Steper',"не игнорь!!","2019-12-30 12:12:30",'не прочитано');
-
-
-ALTER TABLE `messages` ADD FOREIGN KEY (`rlogin`) 
-REFERENCES `users`(`username`) 
-ON DELETE RESTRICT 
-ON UPDATE RESTRICT;
-
-ALTER TABLE `messages` ADD FOREIGN KEY (`slogin`) 
-REFERENCES `users`(`username`) 
-ON DELETE RESTRICT 
-ON UPDATE RESTRICT;
